@@ -54,32 +54,31 @@ static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data
 // + Contains no strange transactions
 static Checkpoints::MapCheckpoints mapCheckpoints =
     boost::assign::map_list_of
-    (0, uint256("0x00000c392c066ec40b4138a3642ac7c7c3a0b157be45553ea1adcce4196c968d"))
-    (500, uint256("00000056fef1c070facfef7097b8a527615d8145a5d2767621ccabbeeea42978"));
+    (0, uint256("00000b98922740df00b3901f57ccd37aacffe301de658ca83c0a5f875ae9a890"));
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1527296219, // * UNIX timestamp of last checkpoint block
-    609,    // * total number of transactions between genesis and last checkpoint
+    1530742317, // * UNIX timestamp of last checkpoint block
+    0,    // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
     2000        // * estimated number of transactions per day after checkpoint
 };
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
     boost::assign::map_list_of
-    (0, uint256("0x000002244385b8f9a32b98ab6b9eb0c0e30acfce4f76fb63fbd5b6ba3d4936cf"));
+    (0, uint256("0x"));
 static const Checkpoints::CCheckpointData dataTestnet = {
     &mapCheckpointsTestnet,
-    1525032501,
+    1530742317,
     0,
     250};
 
 static Checkpoints::MapCheckpoints mapCheckpointsRegtest =
     boost::assign::map_list_of
-    (0, uint256("0x000006ba3bf77872f9c4747ed7451309cfc89c85f6b74f19254868211162de4a")); // lyra2z
+    (0, uint256("0x")); // lyra2z
 //    (0, uint256("0x000001733877023e9a2751258b8119e420e153377ffd21c996af58c8cdceede5")); // quark
 static const Checkpoints::CCheckpointData dataRegtest = {
     &mapCheckpointsRegtest,
-    1525032502,
+    1530742317,
     0,
     100};
 
@@ -137,26 +136,8 @@ public:
         nBlockLastGoodCheckpoint = 0; //Last valid accumulator checkpoint
         nBlockEnforceInvalidUTXO = 1; //Start enforcing the invalid UTXO's
 
-        /*
-            ```
-            python ~/gig8/GenesisH0/genesis.py -a quark-hash \
-              -z "S. Africa looks to accelerate land redistribution" \
-              -t 1525032500 -v 0 \
-              -p 04dd017f0deb12b60abcb78030ffac6b351e2180dc57c881118013a94775a988d3c9390e71404395011409556d0963d9241ce7db4cb8266bf1c18fac3ff3fe9069
-            ```
 
-            04ffff001d010431532e20416672696361206c6f6f6b7320746f20616363656c6572617465206c616e64207265646973747269627574696f6e
-            algorithm: quark-hash
-            merkle hash: 5343845516659ffdf8d65682c3241bedffdcb4f85a51b780f6ebfffe619a31a3
-            pszTimestamp: S. Africa looks to accelerate land redistribution
-            pubkey: 04dd017f0deb12b60abcb78030ffac6b351e2180dc57c881118013a94775a988d3c9390e71404395011409556d0963d9241ce7db4cb8266bf1c18fac3ff3fe9069
-            time: 1525032500
-            bits: 0x1e0ffff0
-            Searching for genesis hash..
-            genesis hash found!
-            nonce: 308971
-            genesis hash: 00000c392c066ec40b4138a3642ac7c7c3a0b157be45553ea1adcce4196c968d
-        */
+
         const char* pszTimestamp = "Chronos chain made with love in Europe,America,Asia July 5 2018";
         CMutableTransaction txNew;
         txNew.vin.resize(1);
@@ -170,35 +151,11 @@ public:
         genesis.nVersion = 1;
         genesis.nTime = 1530742317;
         genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 308971;
-
-        if(genesis.GetHash() != uint256("0x"))
-                {
-                    printf("Searching for genesis block...\n");
-                    uint256 hashTarget = CBigNum().SetCompact(genesis.nBits).getuint256();
-                    while(uint256(genesis.GetHash()) > hashTarget)
-                    {
-                        ++genesis.nNonce;
-                        if (genesis.nNonce == 0)
-                        {
-                            printf("NONCE WRAPPED, incrementing time");
-                            std::cout << std::string("NONCE WRAPPED, incrementing time:\n");
-                            ++genesis.nTime;
-                        }
-                        if (genesis.nNonce % 10000 == 0)
-                        {
-                            printf("Mainnet: nonce %08u: hash = %s \n", genesis.nNonce, genesis.GetHash().ToString().c_str(), genesis.hashMerkleRoot.ToString().c_str());
-                        }
-                    }
-                    printf("block.nTime = %u \n", genesis.nTime);
-                    printf("block.nNonce = %u \n", genesis.nNonce);
-                    printf("block.GetHash = %s\n", genesis.GetHash().ToString().c_str());
-                    printf("block.merklehash = %s\n", genesis.hashMerkleRoot.ToString().c_str());
-                }
+        genesis.nNonce = 3017405;
 
         hashGenesisBlock = genesis.GetHash();
-        assert(genesis.hashMerkleRoot == uint256("0x5343845516659ffdf8d65682c3241bedffdcb4f85a51b780f6ebfffe619a31a3"));
-        assert(hashGenesisBlock == uint256("0x00000c392c066ec40b4138a3642ac7c7c3a0b157be45553ea1adcce4196c968d"));
+        assert(genesis.hashMerkleRoot == uint256("0xf79c08a6cb0023b7638597967a4a54b5321cbfa44c35aa99d5db0a660e0710d7"));
+        assert(hashGenesisBlock == uint256("0x00000b98922740df00b3901f57ccd37aacffe301de658ca83c0a5f875ae9a890"));
 
         // Zerocoin, activated never
         nZerocoinStartHeight = INT_MAX;
@@ -302,25 +259,7 @@ public:
         // nBlockLastGoodCheckpoint = 0; //Last valid accumulator checkpoint
         // nBlockEnforceInvalidUTXO = 1; //Start enforcing the invalid UTXO's
 
-        /*
-            ```
-            python ~/gig8/GenesisH0/genesis.py -a quark-hash \
-              -z "S. Africa looks to accelerate land redistribution" \
-              -t 1525032501 -v 0 \
-              -p 04dd017f0deb12b60abcb78030ffac6b351e2180dc57c881118013a94775a988d3c9390e71404395011409556d0963d9241ce7db4cb8266bf1c18fac3ff3fe9069
-            ```
-            04ffff001d010431532e20416672696361206c6f6f6b7320746f20616363656c6572617465206c616e64207265646973747269627574696f6e
-            algorithm: quark-hash
-            merkle hash: 5343845516659ffdf8d65682c3241bedffdcb4f85a51b780f6ebfffe619a31a3
-            pszTimestamp: S. Africa looks to accelerate land redistribution
-            pubkey: 04dd017f0deb12b60abcb78030ffac6b351e2180dc57c881118013a94775a988d3c9390e71404395011409556d0963d9241ce7db4cb8266bf1c18fac3ff3fe9069
-            time: 1525032501
-            bits: 0x1e0ffff0
-            Searching for genesis hash..
-            genesis hash found!
-            nonce: 601665
-            genesis hash: 000002244385b8f9a32b98ab6b9eb0c0e30acfce4f76fb63fbd5b6ba3d4936cf
-        */
+
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
         genesis.nTime = 1530742317;
         genesis.nBits = 0x1e0ffff0;
@@ -393,25 +332,7 @@ public:
         nTargetSpacing = 120;        // Chronos: 2 min
         bnProofOfWorkLimit = ~uint256(0) >> 1;
 
-        /*
-            ```
-            python ~/gig8/GenesisH0/genesis.py -a quark-hash \
-              -z "S. Africa looks to accelerate land redistribution" \
-              -t 1525032502 -v 0 \
-              -p 04dd017f0deb12b60abcb78030ffac6b351e2180dc57c881118013a94775a988d3c9390e71404395011409556d0963d9241ce7db4cb8266bf1c18fac3ff3fe9069
-            ```
-            04ffff001d010431532e20416672696361206c6f6f6b7320746f20616363656c6572617465206c616e64207265646973747269627574696f6e
-            algorithm: quark-hash
-            merkle hash: 5343845516659ffdf8d65682c3241bedffdcb4f85a51b780f6ebfffe619a31a3
-            pszTimestamp: S. Africa looks to accelerate land redistribution
-            pubkey: 04dd017f0deb12b60abcb78030ffac6b351e2180dc57c881118013a94775a988d3c9390e71404395011409556d0963d9241ce7db4cb8266bf1c18fac3ff3fe9069
-            time: 1525032502
-            bits: 0x1e0ffff0
-            Searching for genesis hash..
-            genesis hash found!
-            nonce: 233847
-            genesis hash: 000006ba3bf77872f9c4747ed7451309cfc89c85f6b74f19254868211162de4a
-        */
+        
         genesis.nTime = 1530742317;
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 233847;
